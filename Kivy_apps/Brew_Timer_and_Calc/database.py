@@ -5,29 +5,70 @@ class DataBase:
     def __init__(self, filename):
         self.filename = filename
         self.recipes = None
+        self.hops = None
         self.file = None
         self.load()
 
     def load(self):
-        self.recipe = {}
-        self.recipe_information = {}
-        with open(self.filename, newline='') as csvfile:
-            self.file = csv.DictReader(csvfile, delimiter = '$')
+        self.recipes = {}
+        self.file = open(self.filename, "r")
         
-       
-            for line in self.file:
-                print(line)
-       
-        
-        #if self.file['Recipe Name'] == 'recipe1':
-#            self.recipe = line
-#        print(self.recipe)
-#            recipe_name, recipe_profile  = line.strip().split("$")
-#            self.recipes[recipe_name] = (recipe_profile)
-#            for recipe in self.recipes:
-#                recipe.strip().split(";")
-#                
+        for line in self.file:
+            recipename, finalvolume, preboilgravity, boiltime = line.strip().split("$")
+            self.recipes[recipename] = (finalvolume, preboilgravity, boiltime)
+    
+    def add_recipe(self, recipename, finalvolume, preboilgravity, boiltime):
+        if recipename.strip() not in self.recipes:
+            self.recipes[recipename.strip()] = (finalvolume.strip(), preboilgravity.strip(), boiltime.strip())
+            self.save()
+            return 1
+        else:
+            print("Recipe Name Already Exists")
+            return -1
+    
+    def save(self):
+        with open(self.filename, "w") as f:
+            for recipe in self.recipes:
+                f.write(recipe + "$" + self.recipes[recipe][0] + "$" + self.recipes[recipe][1] + "$" + self.recipes[recipe][2] + "\n")   
+                
+    
+#    def loadhops(self):
+#        self.hops = {}
+#        self.file = open(self.filename, "r")
 #        
+#        for line in self.file:
+#            line.strip().split("$")
+#            recipename = line[0]
+#            self.hops[recipename] = line[1:]
+#       
+#    
+#    def add_hops(self, recipename, hopname, hoptiming, hopweight, hopacid):
+#        self.loadhops()
+#        if recipename.strip() not in self.recipes:
+#            self.recipes[recipename.strip()] = (finalvolume.strip(), preboilgravity.strip(), boiltime.strip())
+#            self.save()
+#            return 1
+#        else:
+#            print("Recipe Name Already Exists")
+#            return -1
+         
+                
+         
+#class DataBase:
+#    def __init__(self, filename):
+#        self.filename = filename
+#        self.users = None
+#        self.file = None
+#        self.load()
+#
+#    def load(self):
+#        self.file = open(self.filename, "r")
+#        self.users = {}
+#
+#        for line in self.file:
+#            email, password, name, created = line.strip().split(";")
+#            self.users[email] = (password, name, created)
+#
 #        self.file.close()
 #
 #    def get_user(self, email):
@@ -59,11 +100,6 @@ class DataBase:
 #    @staticmethod
 #    def get_date():
 #        return str(datetime.datetime.now()).split(" ")[0]
-
-recipes = DataBase('recipes.csv')
-#recipes.load()
-
-
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """

@@ -1,172 +1,444 @@
-<CreateAccountWindow>:
-    name: "create"
+<WelcomeWindow>:
+    name: "Welcome"
 
-    namee: namee
-    email: email
-    password: passw
 
     FloatLayout:
         cols:1
 
         FloatLayout:
-            size: root.width, root.height/2
+            size: root.width, root.height
 
             Label:
-                text: "Create an Account"
+                text: "Welcome To Brew Timer and Calculator"
                 size_hint: 0.8, 0.2
                 pos_hint: {"x":0.1, "top":1}
-                font_size: (root.width**2 + root.height**2) / 14**4
+                font_size: (root.width + root.height) / 50
 
+
+            Button:
+                pos_hint:{"x":0.2,"y":0.5}
+                size_hint: 0.6, 0.15
+                font_size: (root.width + root.height) / 50
+                text: "Create a New Recipe"
+                on_release:
+                    root.manager.transition.direction = "left"
+                    root.Create()
+
+            Button:
+                pos_hint:{"x":0.2,"y":0.25}
+                size_hint: 0.6, 0.15
+                text: "Load a Previous Recipe"
+                font_size: (root.width + root.height) / 50
+                on_release:
+                    root.manager.transition.direction = "left"
+                    root.Load()
+
+
+<LoadPreviousRecipe>:
+    name: "load"
+
+    FloatLayout:
+
+        Label:
+            text:"Choose a recipe from the list below: "
+            font_size: (root.width + root.height) / 50
+            pos_hint: {"x":0.3, "top":0.9}
+            size_hint: 0.35, 0.15
+
+        CustomDropDown:
+            pos_hint:{"x":0.22,"y":0.20}
+            size_hint: 0.50, 0.50
+            Button:
+                text: 'My first Item'
+                size_hint_y: None
+                height: 44
+                on_release: root.select('item1')
+            Button:
+                text: 'My second Item'
+                size_hint_y: None
+                height: 44
+                on_release: root.select('item2')
+            Button:
+                text: 'My Third Item'
+                size_hint_y: None
+                height: 44
+                on_release: root.select('item2')
+            Button:
+                text: 'My Fourth Item'
+                size_hint_y: None
+                height: 44
+                on_release: root.select('item2')
+            Button:
+                text: 'My Fifth Item'
+                size_hint_y: None
+                height: 44
+                on_release: root.select('item2')
+            Button:
+                text: 'My Sixth Item'
+                size_hint_y: None
+                height: 44
+                on_release: root.select('item2')
+        
+        Button:
+            pos_hint:{"x":0.33,"y":0.10}
+            size_hint: 0.3, 0.05
+            font_size: (root.width + root.height) / 75
+            text: "Return To Home"
+            on_release:
+                root.manager.transition.direction = "right"
+                root.ReturnHome()
+                
+                
+<CreateRecipeWindow>:
+    name: "Create Recipe"
+
+    recipename: recipename
+    finalvolume: finalvolume
+    preboilgravity: preboilgravity
+    boiltime: boiltime
+
+    GridLayout:
+        cols: 1
+
+        Label:
+            text:"Create a new Recipe Below: "
+            font_size: (root.width + root.height) / 50
+            size_hint: 0.05, 0.05               
+                
+        GridLayout:
+            cols: 2
+            size_hint: 0.2, 0.2
             Label:
-                size_hint: 0.5,0.12
-                pos_hint: {"x":0, "top":0.8}
-                text: "Name: "
-                font_size: (root.width**2 + root.height**2) / 14**4
-
+                text:"Recipe Name: "
+                font_size: (root.width + root.height) / 50                
             TextInput:
-                pos_hint: {"x":0.5, "top":0.8}
-                size_hint: 0.4, 0.12
-                id: namee
+                id: recipename
                 multiline: False
-                font_size: (root.width**2 + root.height**2) / 14**4
-
+                font_size: (root.width + root.height) / 50
             Label:
-                size_hint: 0.5,0.12
-                pos_hint: {"x":0, "top":0.8-0.13}
-                text: "Email: "
-                font_size: (root.width**2 + root.height**2) / 14**4
-
+                text:"Final Volume Desired: "
+                font_size: (root.width + root.height) / 50
             TextInput:
-                pos_hint: {"x":0.5, "top":0.8-0.13}
-                size_hint: 0.4, 0.12
-                id: email
+                id: finalvolume
                 multiline: False
-                font_size: (root.width**2 + root.height**2) / 14**4
-
+                font_size: (root.width + root.height) / 50
             Label:
-                size_hint: 0.5,0.12
-                pos_hint: {"x":0, "top":0.8-0.13*2}
-                text: "Password: "
-                font_size: (root.width**2 + root.height**2) / 14**4
-
+                text:"Predicted pre-Boil Gravity "
+                font_size: (root.width + root.height) / 50
             TextInput:
-                pos_hint: {"x":0.5, "top":0.8-0.13*2}
-                size_hint: 0.4, 0.12
-                id: passw
+                id: preboilgravity
                 multiline: False
-                password: True
-                font_size: (root.width**2 + root.height**2) / 14**4
+                font_size: (root.width + root.height) / 50
+            Label:
+                text:"Total Boil Time(min): "
+                font_size: (root.width + root.height) / 50
+            TextInput:
+                id: boiltime
+                multiline: False
+                font_size: (root.width + root.height) / 50
+                  
+        
+        GridLayout:
+            cols: 1
+            size_hint: 0.05, 0.05
+            Button:
+                pos_hint:{"x":0.3,"y":0.25}
+                size_hint: 0.1, 0.1
+                font_size: (root.width + root.height) / 75
+                text: "Continue to Hop Additions"
+                on_release:
+                    root.submit()
+                    root.manager.transition.direction = "left"
+            Button:
+                pos_hint:{"x":0.3,"y":0.25}
+                size_hint: 0.1, 0.1
+                font_size: (root.width + root.height) / 75
+                text: "Return To Home"
+                on_release:
+                    root.manager.transition.direction = "right"
+                    root.ReturnHome()
+                    
 
+
+<AddHopsWindow>
+    name: "AddHops"
+    
+    hopname:hopname
+    hoptiming:hoptiming
+    hopweight:hopweight
+    hopacid:hopacid
+
+
+    GridLayout:
+        cols:1
+        
+        Label:
+            text:"Create a new Recipe Below: "
+            font_size: (root.width + root.height) / 50
+            size_hint: 0.05, 0.05  
+            
+        GridLayout:
+            cols: 2
+            size_hint: 0.4, 0.4    
+            GridLayout:    
+                rows: 8
+                Label:
+                    text:"Hop Name: "
+                    font_size: (root.width + root.height) / 100
+                Label:
+                Label:
+                    text:"Hop Timeing(minutes in boil): "
+                    font_size: (root.width + root.height) / 100
+                Label:
+                Label:
+                    text:"Hop Weight(oz): "
+                    font_size: (root.width + root.height) / 100
+                Label:
+                Label:
+                    text:"Hop Alpha Acid(whole number%): "
+                    font_size: (root.width + root.height) / 100
+                Label:
+                
+            GridLayout:
+                rows: 8
+                TextInput:
+                    id: hopname
+                    multiline: False
+                    font_size: (root.width + root.height) / 100
+                Label:
+                TextInput:
+                    id: hoptiming
+                    multiline: False
+                    font_size: (root.width + root.height) / 100
+                Label:
+                TextInput:
+                    id: hopweight
+                    multiline: False
+                    font_size: (root.width + root.height) / 100
+                Label:
+                TextInput:
+                    id: hopacid
+                    multiline: False
+                    font_size: (root.width + root.height) / 100
+                Label:
+            
+        GridLayout:
+            cols: 1
+            size_hint: 0.20, 0.20
+            
+            Button:
+                pos_hint:{"x":0.3,"y":0.25}
+                size_hint: 0.1, 0.1
+                font_size: (root.width + root.height) / 75
+                text: "Add Hop Profile"
+                on_release:
+                    root.submithop()
+            Button:
+                pos_hint:{"x":0.3,"y":0.25}
+                size_hint: 0.1, 0.1
+                font_size: (root.width + root.height) / 75
+                text: "Finalize Recipe"
+                on_release:
+                    root.manager.transition.direction = "left"
+                    root.submitrecipe()
+        
+<TimerWindow>
+    name: "Timer"
+
+    GridLayout:
+        cols:1       
+                
         Button:
             pos_hint:{"x":0.3,"y":0.25}
-            size_hint: 0.4, 0.1
-            font_size: (root.width**2 + root.height**2) / 17**4
-            text: "Already have an Account? Log In"
+            size_hint: 0.1, 0.1
+            font_size: (root.width + root.height) / 75
+            text: "Start Timer"
+            on_release:
+                root.login()        
+                
+        Label:
+            text:"Clock "
+            font_size: (root.width + root.height) / 100     
+        Label:
+            text:"Current Hop Addition "
+            font_size: (root.width + root.height) / 100 
+        Label:
+            text:"Next Hop Addition "
+            font_size: (root.width + root.height) / 100 
+                
+        Button:
+            pos_hint:{"x":0.3,"y":0.25}
+            size_hint: 0.1, 0.1
+            font_size: (root.width + root.height) / 75
+            text: "Return To HomePage"
+            on_release:
+                root.manager.transition.direction = "left"
+                root.login()
+        Button:
+            pos_hint:{"x":0.3,"y":0.25}
+            size_hint: 0.1, 0.1
+            font_size: (root.width + root.height) / 75
+            text: "Recipe Stats (will exit Timer"
             on_release:
                 root.manager.transition.direction = "left"
                 root.login()
 
+
+<RecipeStatsWindow>
+    name: "stats"
+    
+    GridLayout:
+        cols:1                          
+                
+        Label:
+            text:"Current Recipe Stats"
+            font_size: (root.width + root.height) / 100 
+        Label:
+            text:"Current Recipe Name"
+            font_size: (root.width + root.height) / 100    
+            
+        GridLayout:
+            cols:2
+               
+            Label:
+                text:"Batch Size:"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:" x gallons"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Pre-Boil Volume Needed"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"x gallons "
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Predicted IBUs"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"ibus"
+                font_size: (root.width + root.height) / 100 
+                
         Button:
-            pos_hint:{"x":0.2,"y":0.05}
-            size_hint: 0.6, 0.15
-            text: "Submit"
-            font_size: (root.width**2 + root.height**2) / 14**4
+            pos_hint:{"x":0.3,"y":0.25}
+            size_hint: 0.1, 0.1
+            font_size: (root.width + root.height) / 75
+            text: "View Hop Profile"
             on_release:
                 root.manager.transition.direction = "left"
-                root.submit()
-
-
-<LoginWindow>:
-    name: "login"
-
-    email: email
-    password: password
-
-    FloatLayout:
-
-        Label:
-            text:"Email: "
-            font_size: (root.width**2 + root.height**2) / 13**4
-            pos_hint: {"x":0.1, "top":0.9}
-            size_hint: 0.35, 0.15
-
-        TextInput:
-            id: email
-            font_size: (root.width**2 + root.height**2) / 13**4
-            multiline: False
-            pos_hint: {"x": 0.45 , "top":0.9}
-            size_hint: 0.4, 0.15
-
-        Label:
-            text:"Password: "
-            font_size: (root.width**2 + root.height**2) / 13**4
-            pos_hint: {"x":0.1, "top":0.7}
-            size_hint: 0.35, 0.15
-
-        TextInput:
-            id: password
-            font_size: (root.width**2 + root.height**2) / 13**4
-            multiline: False
-            password: True
-            pos_hint: {"x": 0.45, "top":0.7}
-            size_hint: 0.4, 0.15
-
+                root.login()
         Button:
-            pos_hint:{"x":0.2,"y":0.05}
-            size_hint: 0.6, 0.2
-            font_size: (root.width**2 + root.height**2) / 13**4
-            text: "Login"
+            pos_hint:{"x":0.3,"y":0.25}
+            size_hint: 0.1, 0.1
+            font_size: (root.width + root.height) / 75
+            text: "Return To Timer"
             on_release:
-                root.manager.transition.direction = "up"
-                root.loginBtn()
-
+                root.manager.transition.direction = "left"
+                root.login()
+    
+    
+<HopListWindow>
+    name: "HopList"
+    
+    GridLayout:
+        cols:1                          
+                
+        Label:
+            text:"Hop Profile"
+            font_size: (root.width + root.height) / 100 
+        Label:
+            text:"Current Recipe Name"
+            font_size: (root.width + root.height) / 100    
+            
+        GridLayout:
+            cols:4
+               
+            Label:
+                text:"Hop Name:"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Minutes in Boil"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Weight"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"% Alpha Acid"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Hop Name:"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Minutes in Boil"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Weight"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"% Alpha Acid"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Hop Name:"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Minutes in Boil"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Weight"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"% Alpha Acid"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Hop Name:"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Minutes in Boil"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Weight"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"% Alpha Acid"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Hop Name:"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Minutes in Boil"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"Weight"
+                font_size: (root.width + root.height) / 100 
+            Label:
+                text:"% Alpha Acid"
+                font_size: (root.width + root.height) / 100  
+                
         Button:
-            pos_hint:{"x":0.3,"y":0.3}
-            size_hint: 0.4, 0.1
-            font_size: (root.width**2 + root.height**2) / 17**4
-            text: "Don't have an Account? Create One"
+            pos_hint:{"x":0.3,"y":0.25}
+            size_hint: 0.1, 0.1
+            font_size: (root.width + root.height) / 75
+            text: "Return To Recipe Stats"
             on_release:
-                root.manager.transition.direction = "right"
-                root.createBtn()
-
-
-<MainWindow>:
-    n: n
-    email: email
-    created:created
-
-    FloatLayout:
-        Label:
-            id: n
-            pos_hint:{"x": 0.1, "top":0.9}
-            size_hint:0.8, 0.2
-            text: "Account Name: "
-
-        Label:
-            id: email
-            pos_hint:{"x": 0.1, "top":0.7}
-            size_hint:0.8, 0.2
-            text: "Email: "
-
-        Label:
-            id: created
-            pos_hint:{"x": 0.1, "top":0.5}
-            size_hint:0.8, 0.2
-            text: "Created: "
-
+                root.manager.transition.direction = "left"
+                root.login()
         Button:
-            pos_hint:{"x":0.2, "y": 0.1}
-            size_hint:0.6,0.2
-            text: "Log Out"
+            pos_hint:{"x":0.3,"y":0.25}
+            size_hint: 0.1, 0.1
+            font_size: (root.width + root.height) / 75
+            text: "Return To Home"
             on_release:
-                app.root.current = "login"
-                root.manager.transition.direction = "down"
+                root.manager.transition.direction = "left"
+                root.login()
 
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Apr  7 17:22:42 2020
 
-@author: ryanwebster
-"""
 
+
+
+
+
+
+
+
+
+        

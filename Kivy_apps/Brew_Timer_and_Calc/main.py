@@ -5,102 +5,139 @@ from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from database import DataBase
+from kivy.uix.dropdown import DropDown
+from kivy.base import runTouchApp
+from kivy.uix.button import Button
 
 
-class CreateAccountWindow(Screen):
-    namee = ObjectProperty(None)
-    email = ObjectProperty(None)
-    password = ObjectProperty(None)
+class WelcomeWindow(Screen):
+    
+    
+    def Create(self):
+        sm.current = "Create Recipe"
+    def Load(self):
+        sm.current = "Load"
 
+class LoadPreviousRecipe(Screen):
+    
+    
+    def RecipeStats(self):
+        sm.current = "stats"
+    def ReturnHome(self):
+        sm.current = "Welcome"
+
+class CreateRecipeWindow(Screen):
+    recipename = ObjectProperty(None)
+    finalvolume = ObjectProperty(None)
+    preboilgravity = ObjectProperty(None)
+    boiltime = ObjectProperty(None)
+    
+    def ReturnHome(self):
+        sm.current = "Welcome"
+        
     def submit(self):
-        if self.namee.text != "" and self.email.text != "" and self.email.text.count("@") == 1 and self.email.text.count(".") > 0:
-            if self.password != "":
-                db.add_user(self.email.text, self.password.text, self.namee.text)
-
-                self.reset()
-
-                sm.current = "login"
-            else:
-                invalidForm()
+        if self.recipename.text != "" and self.finalvolume.text != "" and self.preboilgravity.text != '' and self.boiltime.text != '':
+            db1.add_recipe(self.recipename.text, self.finalvolume.text, self.preboilgravity.text, self.boiltime.text)
+            current_recipe_name = self.recipename.text
+            self.reset()
+            sm.current = "Add Hops"
         else:
             invalidForm()
-
-    def login(self):
-        self.reset()
-        sm.current = "login"
-
+    
     def reset(self):
-        self.email.text = ""
-        self.password.text = ""
-        self.namee.text = ""
+        self.recipename.text = ""
+        self.finalvolume.text = ""
+        self.preboilgravity.text = ""
+        self.boiltime.text = ""
 
-
-class LoginWindow(Screen):
-    email = ObjectProperty(None)
-    password = ObjectProperty(None)
-
-    def loginBtn(self):
-        if db.validate(self.email.text, self.password.text):
-            MainWindow.current = self.email.text
+class AddHopsWindow(Screen):
+    recipename = current_recipe_name
+    hopname = ObjectProperty(None)
+    hoptiming = ObjectProperty(None)
+    hopweight = ObjectProperty(None)
+    hopacid = ObjectProperty(None)
+    
+    def submithop(self):
+        if self.hopname.text != "" and self.hoptiming.text != "" and self.hopweight.text != '' and self.hopacid.text != '':
+            db2.add_hops(recipename, self.hopname.text, self.hoptiming.text, self.hopweight.text, self.hopacid.text)
             self.reset()
-            sm.current = "main"
+            sm.current = "Add Hops"
         else:
-            invalidLogin()
-
-    def createBtn(self):
-        self.reset()
-        sm.current = "create"
-
+            invalidForm()
+    
+    def submitrecipe(self):
+        sm.current = "stats"
+        
+    
     def reset(self):
-        self.email.text = ""
-        self.password.text = ""
+        self.hopname.text = ""
+        self.hoptiming.text = ""
+        self.hopweight.text = ""
+        self.hopacid.text = ""
+    
+    def RecipeStats(self):
+        sm.current = "stats"
+    def ReturnHome(self):
+        sm.current = "Welcome"
 
+class TimerWindow(Screen):
+    
+    
+    def RecipeStats(self):
+        sm.current = "stats"
+    def ReturnHome(self):
+        sm.current = "Welcome"
+        
+        
+class RecipeStatsWindow(Screen):
+    
+    def RecipeStats(self):
+        sm.current = "stats"
+    def ReturnHome(self):
+        sm.current = "Welcome"
 
-class MainWindow(Screen):
-    n = ObjectProperty(None)
-    created = ObjectProperty(None)
-    email = ObjectProperty(None)
-    current = ""
+class HopListWindow(Screen):
+    
+    def RecipeStats(self):
+        sm.current = "stats"
+    def ReturnHome(self):
+        sm.current = "Welcome"
 
-    def logOut(self):
-        sm.current = "login"
-
-    def on_enter(self, *args):
-        password, name, created = db.get_user(self.current)
-        self.n.text = "Account Name: " + name
-        self.email.text = "Email: " + self.current
-        self.created.text = "Created On: " + created
 
 
 class WindowManager(ScreenManager):
     pass
 
+class CustomDropDown(DropDown):
+    pass
 
-def invalidLogin():
-    pop = Popup(title='Invalid Login',
-                  content=Label(text='Invalid username or password.'),
-                  size_hint=(None, None), size=(400, 400))
-    pop.open()
+dropdown = CustomDropDown()
+mainbutton = Button(text='Hello', size_hint=(None, None))
+mainbutton.bind(on_release=dropdown.open)
+dropdown.bind(on_select=lambda instance, x: setattr(mainbutton, 'text', x))
+
 
 
 def invalidForm():
     pop = Popup(title='Invalid Form',
                   content=Label(text='Please fill in all inputs with valid information.'),
                   size_hint=(None, None), size=(400, 400))
-
     pop.open()
+
+
 
 
 kv = Builder.load_file("my.kv")
 
 sm = WindowManager()
-db = DataBase("users.txt")
+db1 = DataBase("recipestats.txt")
+db2 = DataBase("recipehops.txt")
 
-screens = [LoginWindow(name="login"), CreateAccountWindow(name="create"),MainWindow(name="main")]
+screens = [HopListWindow(name='HopList'), CreateRecipeWindow(name="Create Recipe"), TimerWindow(name="Timer"), RecipeStatsWindow(name="stats"), WelcomeWindow(name="Welcome"), LoadPreviousRecipe(name="Load"), AddHopsWindow(name="Add Hops")]
 for screen in screens:
     sm.add_widget(screen)
 
-sm.current = "login"
+sm.current = "Welcome"
 
 
 class MyMainApp(App):

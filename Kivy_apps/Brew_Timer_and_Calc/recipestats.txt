@@ -1,0 +1,7 @@
+recipename$finalvolume$preboilgravity$boiltime
+5$5$5$5
+Hopp4$8$1.056$80
+hoppy4$8$2.013$60
+f$f$f$f
+g$g$g$g
+IPA march$5$1.052$6

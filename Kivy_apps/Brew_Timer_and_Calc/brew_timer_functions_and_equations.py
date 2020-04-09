@@ -4,23 +4,7 @@
 #implement an IBU calculator
 #will need a text document to save recipes for future loading
 from decimal import Decimal
-
-
-
- 
 import time
-def countdown_timer_basic(t):
-    while t:
-        mins, secs = divmod(t, 60)
-        timer = '{:02d}:{:02d}'.format(mins, secs)
-        print(timer, end="\r")
-        time.sleep(1)
-        t -= 1
-    print('Blast Off!!!')
-
-#t = input("Enter the time in seconds: ") 
-#
-#countdown_timer_basic(int(t))
 
 
 
